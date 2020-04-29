@@ -1,6 +1,6 @@
 package model
 
-//TokenDetails is a model for jwt data struture
+//TokenDetails is a model for jwt data strutcture
 type TokenDetails struct {
 	AccessToken  string
 	RefreshToken string

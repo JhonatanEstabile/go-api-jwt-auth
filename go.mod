@@ -1,4 +1,4 @@
-module go-api-jwt-auth
+module api-jwt-auth
 
 go 1.13
 

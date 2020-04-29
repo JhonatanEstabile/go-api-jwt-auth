@@ -59,6 +59,7 @@ func createAuth(userid uint64, td *model.TokenDetails) error {
 	now := time.Now()
 
 	client := db.GetRedisClient()
+	defer client.Close()
 
 	errAccess := client.Set(td.AccessUuid, strconv.Itoa(int(userid)), at.Sub(now)).Err()
 	if errAccess != nil {
@@ -71,4 +72,23 @@ func createAuth(userid uint64, td *model.TokenDetails) error {
 	}
 
 	return nil
+}
+
+//Logout erase the user session
+func Logout(c *gin.Context) {
+	tokenString := util.ExtractToken(c.Request)
+
+	au, err := util.ExtractTokenMetadata(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, "unauthorized")
+		return
+	}
+
+	deleted, delErr := util.DeleteAuth(au.AccessUuid)
+	if delErr != nil || deleted == 0 { //if any goes wrong
+		c.JSON(http.StatusUnauthorized, "unauthorized")
+		return
+	}
+
+	c.JSON(http.StatusOK, "Successfully logged out")
 }

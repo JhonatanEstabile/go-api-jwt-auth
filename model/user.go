@@ -1,6 +1,6 @@
 package model
 
-//User model
+//User data strutcture model
 type User struct {
 	ID       uint64 `json:"id"`
 	Username string `json:"username"`
